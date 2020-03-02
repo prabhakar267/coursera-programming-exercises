@@ -22,8 +22,16 @@ idx = zeros(size(X,1), 1);
 %
 
 
-
-
+for i = 1:size(X),
+	minDistance = 1e50;
+	for j = 1:size(centroids),
+		distance = norm(X(i,:) - centroids(j,:), 2);
+		if distance < minDistance
+			minDistance = distance;
+			idx(i) = j;
+		end
+	end
+end
 
 
 

@@ -27,10 +27,26 @@ for epsilon = min(pval):stepsize:max(pval)
 
 
 
+    predictions = pval < epsilon;
+    fp = 0;
+    fn = 0;
+    tp = 0;
+    tn = 0;
+    for i = 1:size(yval),
+        if predictions(i) == yval(i) & predictions(i) == 1,
+            tp += 1;
+        elseif predictions(i) == yval(i) & predictions(i) == 0,
+            tn += 1;
+        elseif predictions(i) ~= yval(i) & predictions(i) == 0,
+            fn += 1;
+        else
+            fp += 1;
+        end
+    end
 
-
-
-
+    prec = tp / (tp + fp);
+    rec = tp / (tp + fn);
+    F1 = (2 * prec * rec) / (prec + rec);
 
 
 

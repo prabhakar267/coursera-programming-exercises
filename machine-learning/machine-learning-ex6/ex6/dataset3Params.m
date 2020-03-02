@@ -25,9 +25,25 @@ sigma = 0.3;
 
 
 
+lowest_error = 1e50;
+lowest_error_C = 0;
+lowest_error_sigma = 0;
 
+for C_cand = [0.01 0.03 0.1 0.3 1 3 10 30],
+	for sigma_cand = [0.01 0.03 0.1 0.3 1 3 10 30],
+		model = svmTrain(X, y, C_cand, @(x1, x2) gaussianKernel(x1, x2, sigma_cand));
+		predictions = svmPredict(model, Xval);
+		pred_error = mean(double(predictions ~= yval));
+		if pred_error < lowest_error,
+			lowest_error = pred_error;
+			lowest_error_C = C_cand;
+			lowest_error_sigma = sigma_cand;
+		end
+	end
+end
 
-
+C = lowest_error_C;
+sigma = lowest_error_sigma;
 
 % =========================================================================
 
